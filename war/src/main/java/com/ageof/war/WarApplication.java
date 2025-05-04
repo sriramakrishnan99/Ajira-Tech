@@ -2,6 +2,8 @@ package com.ageof.war;
 
 import com.ageof.war.common.*;
 import com.ageof.war.exception.NoChanceOfWinning;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +14,7 @@ import java.util.Map;
 @SpringBootApplication
 public class WarApplication {
 
+	private static Logger logger = LoggerFactory.getLogger(WarApplication.class);
 	public static void main(String[] args)	 {
 		ApplicationContext context = SpringApplication.run(WarApplication.class, args);
 
@@ -23,15 +26,14 @@ public class WarApplication {
 		try {
 			winningPlacement = battle.getWinningPlacement(battleInfo.ownArmy, battleInfo.opponentArmy);
 		} catch(NoChanceOfWinning ex) {
-			System.out.println(ex.getMessage());
+			Utility.printErrorLog(logger, ex.getMessage());
 			System.exit(0);
 		}
 
 		PrintOutput printOutput = context.getBean(PrintOutput.class);
 		printOutput.setOutput(winningPlacement);
 
-		System.out.println(printOutput);
-
+		logger.info(printOutput.toString());
 	}
 
 }

@@ -4,6 +4,7 @@ import com.ageof.war.platoon.PlatoonImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,13 @@ public class BattleInfo {
     public void gatherBattleDetails(){
         ApplicationContext appContext = ApplicationContextProvider.getApplicationContext();
         FetchInput fetchInput = appContext.getBean(FetchInput.class);
+
         String ownArmyDetails = scanner.nextLine();
+        CustomValidation.raiseErrorIfInputIsInvalidOrNotInProperFormat(ownArmyDetails);
+
         String opponentArmyDetails = scanner.nextLine();
+        CustomValidation.raiseErrorIfInputIsInvalidOrNotInProperFormat(opponentArmyDetails);
+
         this.ownArmyDetails      = Utility.convertToMap(ownArmyDetails, fetchInput.getPlatoonDelimitter(), fetchInput.getPlatoonAndItsCountDelimitter());
         this.opponentArmyDetails = Utility.convertToMap(opponentArmyDetails, fetchInput.getPlatoonDelimitter(), fetchInput.getPlatoonAndItsCountDelimitter());
     }
